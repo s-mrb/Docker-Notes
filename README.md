@@ -119,8 +119,11 @@ The `docker build` command builds Docker `images` from a `Dockerfile` and a “c
 The URL parameter can refer to three kinds of resources:
 -   git repositories
 -   pre-packaged tarball contexts 
--   plain text files.
-<br>
+-   plain text files.    
+
+
+
+
 [Reference](https://docs.docker.com/engine/reference/commandline/build/)
 
 ### run
