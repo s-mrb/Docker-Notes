@@ -156,7 +156,9 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 **options:**
 
 - `d`
-  - run the container in detached mode (in the background) - containers started in detached mode exit when the root process used to run the container exits, unless you also specify the `--rm` option. If you use `-d` with `--rm`, the container is removed when it exits or when the daemon exits, whichever happens first.
+  - run the container in detached mode (in the background)
+  - containers started in detached mode exit when the root process used to run the container exits, unless you also specify the `--rm` option.
+  - If you use `-d` with `--rm`, the container is removed when it exits or when the daemon exits, whichever happens first.
 - `p <p1>:<p2>`
   - map port <p1> of the host to port <p2> in the container
 - `name`
