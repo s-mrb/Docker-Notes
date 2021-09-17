@@ -137,7 +137,7 @@ The URL parameter can refer to three kinds of resources:
 - `cpu-period`
   - Limit the CPU CFS (Completely Fair Scheduler) period
 
-[Reference](https://docs.docker.com/engine/reference/commandline/build/)
+[More](https://docs.docker.com/engine/More/commandline/build/)
 
 ---
 
@@ -167,7 +167,7 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 
   - specify a version of an image you’d like to run the container with - For example, `docker run ubuntu:14.04`
 
-  [Reference](https://docs.docker.com/engine/reference/run/)
+  [More](https://docs.docker.com/engine/More/run/)
 
 ---
 
@@ -197,7 +197,7 @@ Returns desired overview selected containers.
 - `n`
   - Show n last created containers (includes all states)
 
-[Reference](https://docs.docker.com/engine/reference/commandline/ps/)
+[More](https://docs.docker.com/engine/More/commandline/ps/)
 
 ---
 
@@ -212,7 +212,7 @@ docker image ls [OPTIONS] [REPOSITORY[:TAG]]
 **Explanation:**  
 Returns desired overview selected containers.
 
-[Reference](https://docs.docker.com/engine/reference/commandline/image_ls/)
+[More](https://docs.docker.com/engine/More/commandline/image_ls/)
 
 ---
 
@@ -233,7 +233,7 @@ The main process inside the container will receive `SIGTERM`, and after a grace 
   - Seconds to wait for stop before killing it
   - Default 10 s
 
-[Reference]()
+[More]()
 
 ---
 
@@ -255,7 +255,7 @@ The main process inside the container will receive `SIGTERM`, and after a grace 
   - Remove the specified link
 - `v` - Remove anonymous volumes associated with the container
 
-[Reference](https://docs.docker.com/engine/reference/commandline/rm/)
+[More](https://docs.docker.com/engine/More/commandline/rm/)
 
 ---
 
@@ -270,7 +270,7 @@ docker container prune [OPTIONS]
 **Explanation:**  
 Removes all stopped containers
 
-[Reference](https://docs.docker.com/engine/reference/commandline/container_prune/)
+[More](https://docs.docker.com/engine/More/commandline/container_prune/)
 
 ---
 
@@ -282,7 +282,7 @@ Removes all stopped containers
 docker push [OPTIONS] NAME[:TAG]
 ```
 
-[Reference](https://docs.docker.com/engine/reference/commandline/push/)
+[More](https://docs.docker.com/engine/More/commandline/push/)
 
 ---
 
@@ -302,7 +302,7 @@ Login to a registry.
 - `u`
 - `p`
 
-[Reference](https://docs.docker.com/engine/reference/commandline/login/)
+[More](https://docs.docker.com/engine/More/commandline/login/)
 
 ---
 
@@ -317,7 +317,7 @@ docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 
 **options:**
 
-[Reference](https://docs.docker.com/engine/reference/commandline/tag/)
+[More](https://docs.docker.com/engine/More/commandline/tag/)
 
 ---
 
@@ -333,7 +333,7 @@ docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 
 **options:**
 
-[Reference]()
+[More]()
 
 ---
 
@@ -345,7 +345,7 @@ docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 
 **options:**
 
-[Reference]()
+[More]()
 
 ## Practice
 
