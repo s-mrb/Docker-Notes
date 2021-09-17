@@ -108,7 +108,7 @@ At the end of the day, a container is simply another process running on the mach
 
 **Usage:**
 
-- `docker build [OPTIONS] PATH | URL | -`
+`docker build [OPTIONS] PATH | URL | -`
 
 **Explanation:**  
 The `docker build` command builds Docker `images` from a `Dockerfile` and a “context”. A build’s context is the set of files located in the specified PATH or URL.
@@ -133,6 +133,8 @@ The URL parameter can refer to three kinds of resources:
 
 [Reference](https://docs.docker.com/engine/reference/commandline/build/)
 
+---
+
 ### run
 
 **Usage:**  
@@ -156,6 +158,8 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 
   [Reference](https://docs.docker.com/engine/reference/run/)
 
+---
+
 ### ps
 
 **Usage:**  
@@ -171,7 +175,9 @@ Returns desired overview selected containers.
 - `f`
   - Filter output based on conditions provided
 - `s`
-  - displays two different on-disk-sizes for each containe - The “size” information shows the amount of data (on disk) that is used for the writable layer of each container - The “virtual size” is the total amount of disk-space used for the read-only image data used by the container and the writable layer.
+  - displays two different on-disk-sizes for each container
+    - The `size` information shows the amount of data (on disk) that is used for the writable layer of each container
+    - The `virtual size` is the total amount of disk-space used for the read-only image data used by the container and the writable layer
 - `no-trunc`
   - Don't truncate output
 - `n`
@@ -179,10 +185,69 @@ Returns desired overview selected containers.
 
 [Reference](https://docs.docker.com/engine/reference/commandline/ps/)
 
+---
+
+### `stop`
+
+**Usage:**  
+```shell
+docker stop [OPTIONS] CONTAINER [CONTAINER...]
+```
+
+**Explanation:**  
+The main process inside the container will receive `SIGTERM`, and after a grace period, `SIGKILL`.
+
+**options:**
+
+- `t`
+  - Seconds to wait for stop before killing it
+  - Default 10 s
+
+[Reference]()
+
+---
+
+### `rm`
+
+**Usage:**
+
+```shell
+ docker rm [OPTIONS] CONTAINER [CONTAINER...]
+```
+**Explanation:**
+
+**options:**
+
+[Reference]()
+
+---
+
+### command
+
+**Usage:**
+
+**Explanation:**
+
+**options:**
+
+[Reference]()
+
+---
+
+### command
+
+**Usage:**
+` docker rm [OPTIONS] CONTAINER [CONTAINER...]`
+**Explanation:**
+
+**options:**
+
+[Reference]()
+
+---
+
 NEXT
 
-- ps
-- docker stop <the-container-id>
 - docker rm <the-container-id>
 - docker registry - default docker hub
 - docker push <docker id>/<reponame>:<tag>
@@ -190,6 +255,8 @@ NEXT
 - docker login -u YOUR-USER-NAME
 - Use the docker tag command to give the docker-101 image a new name. Be sure to swap out YOUR-USER-NAME with your Docker ID
   - docker tag docker-101 YOUR-USER-NAME/101-todo-app
+
+---
 
 ### command
 
