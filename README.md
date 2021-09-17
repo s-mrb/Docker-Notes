@@ -110,19 +110,25 @@ At the end of the day, a container is simply another process running on the mach
 **Usage:**    
 - `docker build [OPTIONS] PATH | URL | -`
 
-**options:**    
--   `f` - Name of the Dockerfile (Default is 'PATH/Dockerfile')
--   `t` - Name and optionally a tag in the 'name:tag' format
--   `o` - Output destination (format: type=local,dest=path)
--   `cpu-quota` - Limit the CPU CFS (Completely Fair Scheduler) quota
--   `cpu-period` - Limit the CPU CFS (Completely Fair Scheduler) period
-
 **Explanation:**    
 The `docker build` command builds Docker `images` from a `Dockerfile` and a “context”. A build’s context is the set of files located in the specified PATH or URL. 
 The URL parameter can refer to three kinds of resources:
 -   git repositories
 -   pre-packaged tarball contexts 
 -   plain text files.    
+
+**options:**    
+-   `f` 
+        -   Name of the Dockerfile (Default is 'PATH/Dockerfile')
+-   `t` 
+        -   Name and optionally a tag in the 'name:tag' format
+-   `o` 
+        -   Output destination (format: type=local,dest=path)
+-   `cpu-quota` 
+        -   Limit the CPU CFS (Completely Fair Scheduler) quota
+-   `cpu-period` 
+        -   Limit the CPU CFS (Completely Fair Scheduler) period
+
 
 
 
@@ -133,16 +139,48 @@ The URL parameter can refer to three kinds of resources:
 **Usage:**    
 `docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
 
+**Explanation:**    
+When an operator executes docker run, the container process that runs is isolated in that it has its own file system, its own networking, and its own isolated process tree separate from the host.
+With the docker `run [OPTIONS]` an operator can add to or override the image defaults set by a developer. And, additionally, operators can override nearly all the defaults set by the Docker runtime itself.
 
 **options:**    
--   `d` - run the container in detached mode (in the background)
--   `p <p1>:<p2>` - map port <p1> of the host to port <p2> in the container
--   ``
-
-**Explanation:**    
+-   `d` 
+        -   run the container in detached mode (in the background)
+        -   containers started in detached mode exit when the root process used to run the container exits, unless you also specify the `--rm` option. If you use `-d` with `--rm`, the container is removed when it exits or when the daemon exits, whichever happens first.
+-   `p <p1>:<p2>` 
+        -   map port <p1> of the host to port <p2> in the container
+-   `name`
+        -   if you do not assign a container name with the --name option, then the daemon generates a random string name for you.
+-   `[:TAG]`
+        -   specify a version of an image you’d like to run the container with
+        -   For example, `docker run ubuntu:14.04`
 
     
-    [Reference]()
+    [Reference](https://docs.docker.com/engine/reference/run/)
+
+
+### ps
+**Usage:**    
+`docker ps [OPTIONS]`
+
+**Explanation:**    
+Returns desired overview selected containers.
+
+**options:**    
+-   `a`
+        -   Show all containers (default shows just running)
+-   `f`
+        -   Filter output based on conditions provided
+-   `s`
+        -   displays two different on-disk-sizes for each containe
+                -   The “size” information shows the amount of data (on disk) that is used for the writable layer of each container
+                -   The “virtual size” is the total amount of disk-space used for the read-only image data used by the container and the writable layer.
+-   `no-trunc`
+        -   Don't truncate output
+-   `n`
+        -   Show n last created containers (includes all states)
+
+[Reference](https://docs.docker.com/engine/reference/commandline/ps/)
 
 
 NEXT
@@ -167,12 +205,12 @@ NEXT
 ### command
 **Usage:**    
 
-**options:**    
 
 **Explanation:**    
 
+**options:**    
     
-[Reference](https://docs.docker.com/engine/reference/commandline/build/)
+[Reference]()
 
 
 ## Practice
