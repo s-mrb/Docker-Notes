@@ -106,10 +106,40 @@ At the end of the day, a container is simply another process running on the mach
 
 
 ### build
-docker build -t docker-101
+
+**Usage:**    
+- `docker build [OPTIONS] PATH | URL | -`
+
+**options:**    
+-   `d`
+-   `t`
+
+**Explanation:**    
+The `docker build` command builds Docker `images` from a `Dockerfile` and a “context”. A build’s context is the set of files located in the specified PATH or URL. 
+The URL parameter can refer to three kinds of resources:
+-   git repositories
+-   pre-packaged tarball contexts 
+-   plain text files.
+<br>
+[Reference](https://docs.docker.com/engine/reference/commandline/build/)
 
 ### run
-docker run -dp 3000:3000 docker-101
+**Usage:**    
+`docker run -<options> <host_port>:<container_port> <image2use>`
+
+
+**options:**    
+-   `d`
+
+**Explanation:**    
+
+
+### command
+**Usage:**    
+
+**options:**    
+
+**Explanation:**    
 
 
 ## Practice
