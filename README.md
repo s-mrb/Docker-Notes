@@ -102,13 +102,19 @@ When the container is started, the layers of the image are joined together to pr
 
 At the end of the day, a container is simply another process running on the machine. It's just one that brought along its entire environment.
 
+### Docker Registry
+
+A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions
+
 ## Docker CLI Commands
 
 ### build
 
 **Usage:**
 
+```shell
 `docker build [OPTIONS] PATH | URL | -`
+```
 
 **Explanation:**  
 The `docker build` command builds Docker `images` from a `Dockerfile` and a “context”. A build’s context is the set of files located in the specified PATH or URL.
@@ -137,8 +143,11 @@ The URL parameter can refer to three kinds of resources:
 
 ### run
 
-**Usage:**  
+**Usage:**
+
+```shell
 `docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
+```
 
 **Explanation:**  
 When an operator executes docker run, the container process that runs is isolated in that it has its own file system, its own networking, and its own isolated process tree separate from the host.
@@ -162,8 +171,11 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 
 ### ps
 
-**Usage:**  
+**Usage:**
+
+```shell
 `docker ps [OPTIONS]`
+```
 
 **Explanation:**  
 Returns desired overview selected containers.
@@ -187,9 +199,25 @@ Returns desired overview selected containers.
 
 ---
 
-### `stop`
+### image ls
 
-**Usage:**  
+**Usage:**
+
+```shell
+docker image ls [OPTIONS] [REPOSITORY[:TAG]]
+```
+
+**Explanation:**  
+Returns desired overview selected containers.
+
+[Reference](https://docs.docker.com/engine/reference/commandline/image_ls/)
+
+---
+
+### stop
+
+**Usage:**
+
 ```shell
 docker stop [OPTIONS] CONTAINER [CONTAINER...]
 ```
@@ -207,18 +235,87 @@ The main process inside the container will receive `SIGTERM`, and after a grace 
 
 ---
 
-### `rm`
+### rm
 
 **Usage:**
 
 ```shell
  docker rm [OPTIONS] CONTAINER [CONTAINER...]
 ```
+
 **Explanation:**
 
 **options:**
 
-[Reference]()
+- `f`
+  - Force the removal of a running container (uses SIGKILL)
+- `l`
+  - Remove the specified link
+- `v` - Remove anonymous volumes associated with the container
+
+[Reference](https://docs.docker.com/engine/reference/commandline/rm/)
+
+---
+
+### prune
+
+**Usage:**
+
+```shell
+docker container prune [OPTIONS]
+```
+
+**Explanation:**  
+Removes all stopped containers
+
+[Reference](https://docs.docker.com/engine/reference/commandline/container_prune/)
+
+---
+
+### push
+
+**Usage:**
+
+```shell
+docker push [OPTIONS] NAME[:TAG]
+```
+
+[Reference](https://docs.docker.com/engine/reference/commandline/push/)
+
+---
+
+### login
+
+**Usage:**
+
+```shell
+docker login [OPTIONS] [SERVER]
+```
+
+**Explanation:**  
+Login to a registry.
+
+**options:**
+
+- `u`
+- `p`
+
+[Reference](https://docs.docker.com/engine/reference/commandline/login/)
+
+---
+
+### tag
+
+**Usage:**
+
+```shell
+docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+```
+
+**options:**
+
+[Reference](https://docs.docker.com/engine/reference/commandline/tag/)
 
 ---
 
@@ -226,35 +323,15 @@ The main process inside the container will receive `SIGTERM`, and after a grace 
 
 **Usage:**
 
+```shell
+
+```
+
 **Explanation:**
 
 **options:**
 
 [Reference]()
-
----
-
-### command
-
-**Usage:**
-` docker rm [OPTIONS] CONTAINER [CONTAINER...]`
-**Explanation:**
-
-**options:**
-
-[Reference]()
-
----
-
-NEXT
-
-- docker rm <the-container-id>
-- docker registry - default docker hub
-- docker push <docker id>/<reponame>:<tag>
-- docker image ls
-- docker login -u YOUR-USER-NAME
-- Use the docker tag command to give the docker-101 image a new name. Be sure to swap out YOUR-USER-NAME with your Docker ID
-  - docker tag docker-101 YOUR-USER-NAME/101-todo-app
 
 ---
 
