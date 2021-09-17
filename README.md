@@ -102,7 +102,7 @@ When the container is started, the layers of the image are joined together to pr
 
 At the end of the day, a container is simply another process running on the machine. It's just one that brought along its entire environment.
 
-## Commands
+## Docker CLI Commands
 
 
 ### build
@@ -111,8 +111,11 @@ At the end of the day, a container is simply another process running on the mach
 - `docker build [OPTIONS] PATH | URL | -`
 
 **options:**    
--   `d`
--   `t`
+-   `f` - Name of the Dockerfile (Default is 'PATH/Dockerfile')
+-   `t` - Name and optionally a tag in the 'name:tag' format
+-   `o` - Output destination (format: type=local,dest=path)
+-   `cpu-quota` - Limit the CPU CFS (Completely Fair Scheduler) quota
+-   `cpu-period` - Limit the CPU CFS (Completely Fair Scheduler) period
 
 **Explanation:**    
 The `docker build` command builds Docker `images` from a `Dockerfile` and a “context”. A build’s context is the set of files located in the specified PATH or URL. 
@@ -128,13 +131,37 @@ The URL parameter can refer to three kinds of resources:
 
 ### run
 **Usage:**    
-`docker run -<options> <host_port>:<container_port> <image2use>`
+`docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]`
 
 
 **options:**    
--   `d`
+-   `d` - run the container in detached mode (in the background)
+-   `p <p1>:<p2>` - map port <p1> of the host to port <p2> in the container
+-   ``
 
 **Explanation:**    
+
+    
+    [Reference]()
+
+
+NEXT
+- ps
+- docker stop <the-container-id>
+- docker rm <the-container-id>
+- docker registry - default docker hub
+- docker push <docker id>/<reponame>:<tag>
+- docker image ls
+- docker login -u YOUR-USER-NAME
+- Use the docker tag command to give the docker-101 image a new name. Be sure to swap out YOUR-USER-NAME with your Docker ID
+    - docker tag docker-101 YOUR-USER-NAME/101-todo-app
+
+
+
+
+
+
+
 
 
 ### command
@@ -143,6 +170,9 @@ The URL parameter can refer to three kinds of resources:
 **options:**    
 
 **Explanation:**    
+
+    
+[Reference](https://docs.docker.com/engine/reference/commandline/build/)
 
 
 ## Practice
