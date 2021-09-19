@@ -106,6 +106,44 @@ At the end of the day, a container is simply another process running on the mach
 
 A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions
 
+### Data Storage Options in Docker
+
+- Volumes
+
+  - host
+
+  - anonymous
+
+    ```shell
+    docker run -v /path/in/container ...
+    ```
+
+  - named
+
+    ```shell
+    docker volume create somevolumename
+    docker run -v name:/path/in/container ...
+    ```
+
+    You can also specify Docker volumes in your docker-compose.yaml file using the same syntax as the examples above. Here’s an example of a named volume
+
+    ```yaml
+    volumes:
+    `-` db_data:/var/lib/mysql
+    ```
+
+    ```
+
+    ```
+
+- Bind Mounts
+- tmpfs
+
+### Volumes
+
+With the previous experiment, we saw that each container is effectively read-only. While containers can create, update, and delete files, those changes are lost when the container is removed.
+Volumes provide the ability to connect specific filesystem paths of the container back to the host machine. If a directory in the container is mounted, changes in that directory are also seen on the host machine.
+
 ## Docker CLI Commands
 
 ### build
@@ -167,7 +205,16 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 
   - specify a version of an image you’d like to run the container with - For example, `docker run ubuntu:14.04`
 
-  [More](https://docs.docker.com/engine/More/run/)
+- a=[]
+  - Attach to `STDIN`, `STDOUT` and/or `STDERR`
+    -t
+  - Allocate a pseudo-tty
+- sig-proxy=true
+  - Proxy all received signals to the process (non-TTY mode only)
+- i
+  - Keep STDIN open even if not attached
+
+[More](https://docs.docker.com/engine/More/run/)
 
 ---
 
@@ -321,19 +368,30 @@ docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 
 ---
 
-### command
+### volume create
 
 **Usage:**
 
 ```shell
+docker volume create [OPTIONS] [VOLUME]
 
 ```
 
-**Explanation:**
-
 **options:**
 
-[More]()
+- `name`
+
+[More](https://docs.docker.com/engine/reference/commandline/volume_create/)
+
+---
+
+### volume inspect
+
+**Usage:**
+
+```shell
+docker volume inspect database_name
+```
 
 ---
 
@@ -347,7 +405,16 @@ docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
 
 [More]()
 
+---
+
 ## Practice
+
+## Remember
+
+- Each container also gets its own "scratch space" to create/update/remove files. Any changes won't be seen in another container, even if they are using the same image.
+- By default containers can create, update, and delete files, those changes are lost when the container is removed.
+- Volumes are often a better choice than persisting data in a container’s writable layer, because a volume does not increase the size of the containers using it.
+- Docker does not support relative paths for mount points inside the container.
 
 ## Internals
 
