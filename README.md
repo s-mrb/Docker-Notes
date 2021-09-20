@@ -108,41 +108,86 @@ A registry is a storage and content delivery system, holding named Docker images
 
 ### Data Storage Options in Docker
 
-- Volumes
+#### Volumes
 
-  - host
+Created and managed by Docker. You can create a volume explicitly using the `docker volume create` command, or ~Docker can create a volume during container or service creation~.
 
-  - anonymous
+- When you create a volume, it is stored within a directory on the Docker host.
+- When creating the volume you never specify the path in host where data is to be stored, this is managed by docker itself.
+- When you mount the volume into a container, this directory is what is mounted into the container.
+- A given volume can be mounted into multiple containers simultaneously.
+- When no running container is using a volume, the volume is still available to Docker and is not removed automatically. - - You can remove unused volumes using docker volume prune.
 
-    ```shell
-    docker run -v /path/in/container ...
-    ```
+> **Note:** Volumes are similar to the way that bind mounts work, except that volumes are managed by Docker and are isolated from the core functionality of the host machine.
 
-  - named
+##### Types
 
-    ```shell
-    docker volume create somevolumename
-    docker run -v name:/path/in/container ...
-    ```
+- `anonymous`  
+  docker will automatically assign randomly unique name (unique within the host).
 
-    You can also specify Docker volumes in your docker-compose.yaml file using the same syntax as the examples above. Here’s an example of a named volume
+  ```shell
+  docker run -v /path/in/container ...
+  ```
 
-    ```yaml
-    volumes:
-    `-` db_data:/var/lib/mysql
-    ```
+- `named`
 
-    ```
+  ```shell
+  docker volume create somevolumename
+  docker run -v name:/path/in/container ...
+  ```
 
-    ```
+  You can also specify Docker volumes in your docker-compose.yaml file using the same syntax as the examples above. Here’s an example of a named volume
 
-- Bind Mounts
-- tmpfs
+  ```yaml
+  volumes:
+  `-` db_data:/var/lib/mysql
+  ```
 
-### Volumes
+#### Bind Mounts
 
-With the previous experiment, we saw that each container is effectively read-only. While containers can create, update, and delete files, those changes are lost when the container is removed.
-Volumes provide the ability to connect specific filesystem paths of the container back to the host machine. If a directory in the container is mounted, changes in that directory are also seen on the host machine.
+- Have limited functionality compared to volumes.
+- When you use a bind mount, a file or directory on the host machine is mounted into a container.
+- The file or directory is referenced by its full path on the host machine.
+- The file or directory does not need to exist on the Docker host already.
+- It is created on demand if it does not yet exist.
+- They rely on the host machine’s filesystem having a specific directory structure available.
+- You can’t use Docker CLI commands to directly manage bind mounts.
+
+#### tmpfs
+
+A tmpfs mount is not persisted on disk, either on the Docker host or within a container. It can be used by a container during the lifetime of the container, to store non-persistent state or sensitive information. For instance, internally, swarm services use tmpfs mounts to mount secrets into a service’s containers.
+
+#### named pipes
+
+An npipe mount can be used for communication between the Docker host and a container. Common use case is to run a third-party tool inside of a container and connect to the Docker Engine API using a named pipe.
+
+### Volume Type Comparison
+
+|                                              | Named Volumes             | Bind Mounts                   |
+| -------------------------------------------- | ------------------------- | ----------------------------- |
+| Host Location                                | Docker chooses            | You control                   |
+| Mount Example (using `-v`)                   | my-volume:/usr/local/data | /path/to/data:/usr/local/data |
+| Populates new volume with container contents | Yes                       | No                            |
+| Supports Volume Drivers                      | Yes                       | No                            |
+
+
+---
+
+---
+
+## Dockerfile
+
+
+
+---
+
+---
+
+## Docker Compose
+
+---
+
+---
 
 ## Docker CLI Commands
 
@@ -385,6 +430,26 @@ docker volume create [OPTIONS] [VOLUME]
 
 ---
 
+### volume prune
+
+**Usage:**
+
+```shell
+docker volume create [OPTIONS] [VOLUME]
+```
+
+**Explanation:**
+Remove all unused local volumes
+
+**options:**
+
+- `f`
+  - Do not prompt for confirmation
+
+[More](https://docs.docker.com/engine/reference/commandline/volume_prune/)
+
+---
+
 ### volume inspect
 
 **Usage:**
@@ -392,6 +457,28 @@ docker volume create [OPTIONS] [VOLUME]
 ```shell
 docker volume inspect database_name
 ```
+
+---
+
+### exec
+
+**Usage:**
+
+```shell
+docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+```
+
+**Explanation:**
+- runs a new command in a running container.
+- The command started using docker exec only runs while the container’s primary process (PID 1) is running, and it is not restarted if the container is restarted.
+- COMMAND will run in the default directory of the container.
+- If the underlying image has a custom directory specified with the `WORKDIR` directive in its Dockerfile, this will be used instead.
+
+> **Note:** COMMAND should be an executable, a chained or a quoted command will not work. Example: `docker exec -ti my_container "echo a && echo b"` will not work, but `docker exec -ti my_container sh -c "echo a && echo b"` will.
+
+**options:**
+
+[More]()
 
 ---
 
@@ -407,7 +494,15 @@ docker volume inspect database_name
 
 ---
 
+---
+
 ## Practice
+
+- [PWD](https://training.play-with-docker.com)
+
+---
+
+---
 
 ## Remember
 
@@ -416,6 +511,16 @@ docker volume inspect database_name
 - Volumes are often a better choice than persisting data in a container’s writable layer, because a volume does not increase the size of the containers using it.
 - Docker does not support relative paths for mount points inside the container.
 
+---
+
+---
+
 ## Internals
 
 - [Creating Containers from Scratch](https://youtu.be/8fi7uSYlOdc)
+
+## To cover later
+
+- `-w` in `docker run`
+- `docker logs`
+- `docker exec`
