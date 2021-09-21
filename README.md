@@ -524,12 +524,20 @@ services:
   mymongo:
     # what image makes mymongo
     image: 'mongo'
-
+    ports:
+      - '8000:8000'
   mynode:
     # build image for mynode from dockerfile at location .
     build: .
     ports:
       - '8000:8000'
+```
+
+For above example to work the database connection url in app code must reference `mymongo` as hostname i.e.
+
+```js
+'mongodb://mymongo:27017/testup'
+
 ```
 
 ---
