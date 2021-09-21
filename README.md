@@ -4,6 +4,8 @@
 
 Docker is an open source containerization platform. It enables developers to package applications into containers—standardized executable components combining application source code with the operating system (OS) libraries and dependencies required to run that code in any environment.
 
+---
+
 ### Container
 
 - contains a filesystem which is isolated from host filesystem.
@@ -14,12 +16,16 @@ Docker is an open source containerization platform. It enables developers to pac
 
 > **Note:** `container` can have bash-shell, vim-editor etc but does not contain OS.
 
+---
+
 ### Image
 
 - The blueprints of our application which form the basis of containers.
 - Image is created when you build `Dockerfile`
 
 > **Note:** `container` relates to `image` in the same way as `object` relates to `class` in Object Oriented Languages.
+
+---
 
 ### Dockerfile
 
@@ -82,6 +88,8 @@ CMD ["redis-server"]
 
 So when you pull an image from docker hub (in our example Alpine), it just has the configurations to run the basic requirements. When you need to add your own requirements and configurations to an image, you create a `Dockerfile` and add dependencies layer by layer on a base image to run it according to your needs.
 
+---
+
 ### Base Image
 
 Most container-based development starts with a base image and layers on top of it the necessary libraries, binaries, and configuration files necessary to run an application. The base image is the starting point for most container-based development workflows.
@@ -90,9 +98,13 @@ Most base images are basic or minimal Linux distributions: Debian, Ubuntu, Redha
 
 > **Note:** When we say _these images are linux distros_ we don't mean actual kernals, we meant _filesystem snapshot of those distros_.
 
+---
+
 ### Why we need base image?
 
 you have to maintain coherence between all these layers, you cannot base your first image on a moving target (i.e. your writable file-system). So, you need a read-only image that will stay forever the same.
+
+---
 
 ### If containers don't contain OS then how they are able to run application?
 
@@ -102,9 +114,26 @@ When the container is started, the layers of the image are joined together to pr
 
 At the end of the day, a container is simply another process running on the machine. It's just one that brought along its entire environment.
 
+---
+
 ### Docker Registry
 
-A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions
+A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.
+`docker pull` actually downloads images from registry.
+
+---
+
+### Docker Daemon
+
+The background service running on the host that manages building, running and distributing Docker containers. The daemon is the process that runs in the operating system which clients talk to.
+
+---
+
+### Docker Client
+
+The command line tool that allows the user to interact with the daemon. More generally, there can be other forms of clients too - such as Kitematic which provide a GUI to the users.
+
+---
 
 ### Data Storage Options in Docker
 
@@ -300,7 +329,149 @@ LEFT
 
 ---
 
+---
+
 ## Dockerfile
+
+Recipe for creating image.
+
+**Common instructions:**
+
+- `From`
+  - The FROM instruction initializes a new build stage and sets the Base Image for subsequent instructions.
+- `RUN `
+  - `RUN` has two forms
+    - `RUN <command>`
+      - shell form, the command is run in a shell, which by default is `/bin/sh -c` on Linux or `cmd /S /C` on Windows
+    - `RUN ["executable", "param1", "param2"]`
+      - `exec` form
+  - In the shell form you can use a `\` to continue a single RUN instruction onto the next line. For example:
+  ```dockerfile
+  RUN /bin/bash -c 'source $HOME/.bashrc; \
+  echo $HOME'
+  ```
+- `ENTRYPOINT`
+
+  - allows to specify a command along with the parameters
+
+  ```dockerfile
+  ENTRYPOINT echo "Hello, $name"
+  ```
+
+- `ADD`
+
+  - helps in copying data into a docker image
+
+  ```dockerfile
+  ADD /[source]/[destination]
+  ```
+
+- `ENV`
+
+  - provides default values for variables which can be accessed within the container
+
+  ```dockerfile
+  ENV <key1>=<value1> \
+  <key2>=<value2>
+  ```
+
+  - environment variable provided via CLI during run command will override environment variables set in Dockerfile
+
+- `MAINTAINER`
+
+  - declares the author field of the container
+
+  ```dockerfile
+  MAINTAINER name
+  ```
+
+- `EXPOSE`
+
+  - informs the Docker that the container listens on the specified network ports at runtime. You can specify whether the port listens on TCP or UDP, and the default is TCP if the protocol is not specified.
+  - it does not actually publish the port. It functions as a type of documentation between the person who builds the image and the person who runs the container about which ports are to be published.
+  - to actually publish the port when running the container, use the `-p` flag on `docker run` to publish and map one or more ports, or the `-P` flag to publish all exposed ports and map them to high-order ports.
+  - by default `EXPOSE` assumes TCP, you can also specify UDP
+
+  ```dockerfile
+  EXPOSE 80/udp
+  ```
+
+  - to expose both on tcp and udp
+
+  ```dockerfile
+  EXPOSE 80/udp
+  EXPOSE 80/tcp
+  ```
+
+- `CMD`
+  - the default program that will execute once the container runs
+- `ADD`
+
+  - two forms
+
+  ```dockerfile
+  ADD [--chown=<user>:<group>] <src>...<dest>
+
+  <!-- for paths containing whitespaces -->
+  ADD [--chown=<user>:<group>] ["<src>"..."<dest>"]
+  ```
+
+  - the `<src>` path must be inside the context of the build; you can not `ADD ../something /something`, because the first step of a `docker build` is to send the context directory (and dubdirectories) to the daemon
+  - if `<src>` is a URL and `<dest>` does not end with a trailing slash , then a file is downloaded from the URL and copied to `<dest>`
+  - if `<src>` is a URL and `<dest>` does end with a trailing slash, then the filename is inferred from the URL and the file is downloade to `<dest>/<filename>`.
+  - if `<src>` is a directory. the entire contents of the directory are copied, including filesystem metadata.
+  - the `--chown` feature is only supported on Dockerfiles used to build Linux containers.
+
+- `COPY`
+
+  - two forms
+
+  ```dockerfile
+  COPY [--chown=<user>:<group>] <src>...<dest>
+
+  <!-- for paths containing whitespaces -->
+  ADD [--chown=<user>:<group>] ["<src>"..."<dest>"]
+  ```
+
+- `VOLUME`
+
+  - creates a mount point with the specified name and marks it as holding externally mounted volumes from native host or other containers
+  - value can be JSON array or a plain string with multiple arguments
+  - `docker run` initializes newly created volume with any data that exists at the specified location within the base image.
+
+  ```dockerfile
+  FROM ubuntu
+  RUN mkdir/myvol
+  RUN echo "hello there!" > /myvol/greeting
+  VOLUME /myvol
+  ```
+
+  This Dockerfile results in an image that causes `docker run` to create a new mount point at `/myvol` and copy the `greeting` file into the newly created volume.
+
+- `WORKDIR`
+
+  - sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions that follow it in the `Dockerfile`.
+  - if `workdir` doesn't exist, it will be created even if it's not used in any subsequent `Dockerfile` instruction
+  - can be used multiple times in the `Dockerfile`
+  - if relative path is provided, it will be relative to the path of the previous `WORKDIR` instruction
+
+  output of below snippet will be `a/b/c`
+
+  ```dockerfile
+  WORKDIR /a
+  WORKDIR b
+  WORKDIR c
+  RUN pwd
+  ```
+
+  - `WORKDIR` instruction can resolve environment variables previously set using `ENV`
+
+- `ARG`
+  - defines a variable that users can pass at build time to the builder with the `docker build` command using the `--build-arg <key>=<val>` flag
+  ```dockerfile
+  ARG <name>[=>default value]
+  ```
+  - if a user specifies a build argument that was not defined in the Dockerfile, the build outputs a warning
 
 ---
 
@@ -308,9 +479,15 @@ LEFT
 
 ## Docker Compose
 
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration. ... Run docker-compose up and Compose starts and runs your entire app.
+
 ---
 
 ---
+
+## Copy on Write
+
+Copy-on-write is a strategy of sharing and copying files for maximum efficiency. If a file or directory exists in a lower layer within the image, and another layer (including the writable layer) needs read access to it, it just uses the existing file. The first time another layer needs to modify the file (when building the image or running the container), the file is copied into that layer and modified. This minimizes I/O and the size of each of the subsequent layers.
 
 ## Docker CLI Commands
 
@@ -501,6 +678,12 @@ docker push [OPTIONS] NAME[:TAG]
 
 ---
 
+### pull
+
+Download data from registry. If you use the default storage driver overlay2, then your Docker images are stored in `/var/lib/docker/overlay2`
+
+---
+
 ### login
 
 **Usage:**
@@ -615,6 +798,26 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 **options:**
 
 [More]()
+
+---
+
+---
+
+### How to do(s)?
+
+#### kill all running containers
+
+```shell
+docker kill $(docker ps -q)
+```
+
+---
+
+#### delete all stopped containers
+
+```shell
+docker rm $(docker ps -a -q)
+```
 
 ---
 
