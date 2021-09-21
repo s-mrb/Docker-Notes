@@ -1,3 +1,51 @@
+1.  [Theory](https://github.com/s-mrb/Docker-Notes#theory)
+    1.  [Docker](https://github.com/s-mrb/Docker-Notes#docker)
+    1.  [Container](https://github.com/s-mrb/Docker-Notes#container)
+    1.  [Image](https://github.com/s-mrb/Docker-Notes#image)
+    1.  [Dockerfile](https://github.com/s-mrb/Docker-Notes#dockerfile)
+    1.  [Base Image](https://github.com/s-mrb/Docker-Notes#base-image)
+    1.  [Why we need base image?](https://github.com/s-mrb/Docker-Notes#why-we-need-base-image)
+    1.  [If containers don't contain OS then how they are able to run application?](https://github.com/s-mrb/Docker-Notes#if-containers-dont-contain-os-then-how-they-are-able-to-run-application)
+    1.  [Docker Registry](https://github.com/s-mrb/Docker-Notes#docker-registry)
+    1.  [Docker Daemon](https://github.com/s-mrb/Docker-Notes#docker-daemon)
+    1.  [Docker Client](https://github.com/s-mrb/Docker-Notes#docker-client)
+    1.  [Data Storage Options in Docker](https://github.com/s-mrb/Docker-Notes#data-storage-options-in-docker)
+        1.  [Volumes](https://github.com/s-mrb/Docker-Notes#volumes)
+        1.  [Bind Mounts](https://github.com/s-mrb/Docker-Notes#bind-mounts)
+        1.  [tmpfs](https://github.com/s-mrb/Docker-Notes#tmpfs)
+        1.  [named pipes](https://github.com/s-mrb/Docker-Notes#named-pipes)
+        1.  [Volume Type Comparison](https://github.com/s-mrb/Docker-Notes#named-pipes)
+    1.  [Copy on Write](https://github.com/s-mrb/Docker-Notes#copy-on-write)
+1.  [Docker Network Drivers](https://github.com/s-mrb/Docker-Notes#named-pipes)
+    1.  [Bridge](https://github.com/s-mrb/Docker-Notes#bridge)
+    1.  [Overlay](https://github.com/s-mrb/Docker-Notes#overlay)
+    1.  [Macvlan](https://github.com/s-mrb/Docker-Notes#macvlan)
+1.  [Dockerfile](https://github.com/s-mrb/Docker-Notes#dockerfile-1)
+    1.  [Common instructions](https://github.com/s-mrb/Docker-Notes#common-instructions)
+    1.  [Important Points](https://github.com/s-mrb/Docker-Notes#important-points)
+1.  [Docker Compose](https://github.com/s-mrb/Docker-Notes#docker-compose)
+1.  [Docker CLI Commands](https://github.com/s-mrb/Docker-Notes#docker-cli-commands)
+    1.  [build](https://github.com/s-mrb/Docker-Notes#build)
+    1.  [run](https://github.com/s-mrb/Docker-Notes#run)
+    1.  [ps](https://github.com/s-mrb/Docker-Notes#ps)
+    1.  [image ls](https://github.com/s-mrb/Docker-Notes#image-ls)
+    1.  [stop](https://github.com/s-mrb/Docker-Notes#stop)
+    1.  [rm](https://github.com/s-mrb/Docker-Notes#rm)
+    1.  [prune](https://github.com/s-mrb/Docker-Notes#prune)
+    1.  [push](https://github.com/s-mrb/Docker-Notes#push)
+    1.  [pull](https://github.com/s-mrb/Docker-Notes#pull)
+    1.  [login](https://github.com/s-mrb/Docker-Notes#login)
+    1.  [tag](https://github.com/s-mrb/Docker-Notes#tag)
+    1.  [volume create](https://github.com/s-mrb/Docker-Notes#volume-create)
+    1.  [volume prune](https://github.com/s-mrb/Docker-Notes#volume-prune)
+    1.  [volume inspect](https://github.com/s-mrb/Docker-Notes#volume-inspect)
+    1.  [exec](https://github.com/s-mrb/Docker-Notes#exec)
+1.  [How to do(s)?](https://github.com/s-mrb/Docker-Notes#how-to-dos)
+1.  [Practice](https://github.com/s-mrb/Docker-Notes#practice)
+1.  [Read More](https://github.com/s-mrb/Docker-Notes#read-more)
+1.  [Remember](https://github.com/s-mrb/Docker-Notes#remember)
+1.  [Internals](https://github.com/s-mrb/Docker-Notes#internals)
+
 ## Theory
 
 ### Docker
@@ -199,7 +247,11 @@ An npipe mount can be used for communication between the Docker host and a conta
 | Populates new volume with container contents | Yes                       | No                            |
 | Supports Volume Drivers                      | Yes                       | No                            |
 
----
+-
+
+### Copy on Write
+
+## Copy-on-write is a strategy of sharing and copying files for maximum efficiency. If a file or directory exists in a lower layer within the image, and another layer (including the writable layer) needs read access to it, it just uses the existing file. The first time another layer needs to modify the file (when building the image or running the container), the file is copied into that layer and modified. This minimizes I/O and the size of each of the subsequent layers.
 
 ---
 
@@ -543,10 +595,6 @@ For above example to work the database connection url in app code must reference
 ---
 
 ---
-
-## Copy on Write
-
-Copy-on-write is a strategy of sharing and copying files for maximum efficiency. If a file or directory exists in a lower layer within the image, and another layer (including the writable layer) needs read access to it, it just uses the existing file. The first time another layer needs to modify the file (when building the image or running the container), the file is copied into that layer and modified. This minimizes I/O and the size of each of the subsequent layers.
 
 ## Docker CLI Commands
 
