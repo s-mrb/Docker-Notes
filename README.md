@@ -467,10 +467,13 @@ Recipe for creating image.
   - `WORKDIR` instruction can resolve environment variables previously set using `ENV`
 
 - `ARG`
+
   - defines a variable that users can pass at build time to the builder with the `docker build` command using the `--build-arg <key>=<val>` flag
+
   ```dockerfile
   ARG <name>[=>default value]
   ```
+
   - if a user specifies a build argument that was not defined in the Dockerfile, the build outputs a warning
 
 ---
