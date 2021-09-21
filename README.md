@@ -247,7 +247,7 @@ An npipe mount can be used for communication between the Docker host and a conta
 | Populates new volume with container contents | Yes                       | No                            |
 | Supports Volume Drivers                      | Yes                       | No                            |
 
--
+
 
 ### Copy on Write
 
