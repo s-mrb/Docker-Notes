@@ -170,14 +170,137 @@ An npipe mount can be used for communication between the Docker host and a conta
 | Populates new volume with container contents | Yes                       | No                            |
 | Supports Volume Drivers                      | Yes                       | No                            |
 
+---
 
 ---
+
+## Docker Network Drivers
+
+**Keywords:**
+
+- `Outbound Communication:` going from inside the container to outside the host
+- `Inbound Communication:` going from outside the host to inside container
+- `container to container:` going from one container to another within the same host
+- `NAT:` Network address translation is translation of one IP address into another.
+- `DNAT:` Destination address translation, translating public address of container into its private address.
+- `SNAT:` Source address translation, translating private address of container into its public address.
+
+### Bridge
+
+Creates a Linux virtual bridge and attaches the container to a bridge port.
+
+![1.png](https://github.com/s-mrb/Docker-Notes/blob/main/files/images/1.png)
+
+#### Basic Networking in Docker / Default Bridge
+
+- container host have Ethernet Adapter (lets call it `eth0`)
+- `eth0` goes into IP tables of linux kernel (lets call it `iptables`), these tables are also used for NAT function
+- `iptables` is also connected with docker bridger (default docker bridge is called `docker0`)
+  - run below command to see docker0 as new network after you have installed docker
+  ```shell
+  ip a | grep "docker0"
+  ```
+- it is `docker0` with which one or more container can attach
+
+**Note:**  
+When you install docker `docker0` a virtual bridge is created and is also added as rule to `iptables`, sepcifically a `MASQUERADE` rule, `MASQUERADE`s in `iptables` function very much like interace based sourcemap, so any packet sourced from range `172.17.0.0/16` (`docker0` bridge subnet) are going to have their source IP's translated to the outgoing interface IP and hence containers are able to access internet (guess so!).
+
+`sudo iptables -t nat --list` to view `iptables`
+
+```shell
+⚝      sudo iptables -t nat --list
+[sudo] password for xyz:
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere             anywhere             ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere            !localhost/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  172.17.0.0/16        anywhere
+MASQUERADE  all  --  172.19.0.0/16        anywhere
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+RETURN     all  --  anywhere             anywhere
+```
+
+**create a network over deafult brige:**
+
+- chose driver default
+- set name of bridge as `appbr0`
+- set subset
+- name network as `app_net`
+
+```shell
+docker network create --driver=bridge -o "com.docker.network.brdige.name=appbr0" --subnet=172.200.0.0/16 app_net
+```
+
+**see all networks on docker**
+network name should be `app_net` not `appbr0`
+
+```shell
+docker network ls
+```
+
+**find appbr0 among network interfaces of host**
+
+```shell
+ifconfig
+```
+
+Among all the interfaces you will see:
+
+```shell
+appbr0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.200.0.1  netmask 255.255.0.0  broadcast 172.200.255.255
+        ether 02:42:68:65:78:85  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+```
+
+- `appbr0` is assigned `1` address in that subnet
+  Or you could have used grep but it would return less details.
+
+> **Note:** When you attach a network to any container then you get a new `virtual ethernet interface`. Try `ifconfig` to explore it. This new `veth` is be attached to any docker bridge which in turn is attached with `iptables` and hence our container is able to access internet.
+
+**How we are able to access server inside the container from our browser?**  
+A `DNAT` rule added in `iptables` while assigning network to a container helps in forwarding packets sent to `x` port of host to `y` port of `container` where port mapping is `x:y`.
+You can run `iptables -t nat --list` after and before assigning network to a container to explore more.
+
+#### Custom bridge
+
+LEFT for now
+
+### Host
+
+Attaches the container to the host network. Host network is accessable to container just as it is to the host
+
+### None
+
+Container has only loopback interface
+
+### Overlay
+
+LEFT
+
+### Macvlan
+
+## LEFT
 
 ---
 
 ## Dockerfile
-
-
 
 ---
 
@@ -469,6 +592,7 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 ```
 
 **Explanation:**
+
 - runs a new command in a running container.
 - The command started using docker exec only runs while the container’s primary process (PID 1) is running, and it is not restarted if the container is restarted.
 - COMMAND will run in the default directory of the container.
@@ -499,6 +623,14 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 ## Practice
 
 - [PWD](https://training.play-with-docker.com)
+
+---
+
+---
+
+## Read More
+
+- [docker networks](https://binarymaps.com/docker-network/)
 
 ---
 
