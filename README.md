@@ -335,7 +335,7 @@ LEFT
 
 Recipe for creating image.
 
-**Common instructions:**
+### Common instructions
 
 - `From`
   - The FROM instruction initializes a new build stage and sets the Base Image for subsequent instructions.
@@ -478,11 +478,59 @@ Recipe for creating image.
 
 ---
 
+### Important Points
+
+#### Difference between CMD and ENTRYPOINT
+
+- ENTRYPOINT: command to run when container starts.
+- CMD: command to run when container starts or arguments to ENTRYPOINT if specified.
+
+You can override any of them when running docker run.
+
+Difference between CMD and ENTRYPOINT **by example**:
+
+    docker run -it --rm yourcontainer /bin/bash            <-- /bin/bash overrides CMD
+                                                           <-- /bin/bash does not override ENTRYPOINT
+    docker run -it --rm --entrypoint ls yourcontainer      <-- overrides ENTRYPOINT with ls
+    docker run -it --rm --entrypoint ls yourcontainer  -la  <-- overrides ENTRYPOINT with ls and overrides CMD with -la
+
+More on difference between `CMD` and `ENTRYPOINT`:
+
+Argument to `docker run` such as /bin/bash overrides any CMD command we wrote in Dockerfile.
+
+ENTRYPOINT cannot be overriden at run time with normal commands such as `docker run [args]`. The `args` at the end of `docker run [args]` are provided as arguments to ENTRYPOINT. In this way we can create a `container` which is like a normal binary such as `ls`.
+
+So CMD can act as default parameters to ENTRYPOINT and then we can override the CMD args from [args].
+
+ENTRYPOINT can be overriden with `--entrypoint`.
+
+---
+
 ---
 
 ## Docker Compose
 
 Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. Then, with a single command, you create and start all the services from your configuration. ... Run docker-compose up and Compose starts and runs your entire app.
+
+### Example
+
+```yml
+# version of app
+version: '3'
+
+# containers are services
+services:
+  # service name
+  mymongo:
+    # what image makes mymongo
+    image: 'mongo'
+
+  mynode:
+    # build image for mynode from dockerfile at location .
+    build: .
+    ports:
+      - '8000:8000'
+```
 
 ---
 
