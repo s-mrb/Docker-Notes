@@ -532,14 +532,16 @@ Recipe for creating image.
 
 ### Important Points
 
-#### Difference between CMD and ENTRYPOINT
+#### Difference between RUN, CMD and ENTRYPOINT
+All three instructions (`RUN`, `CMD` and `ENTRYPOINT`) can be specified in shell form or exec form    
 
-- ENTRYPOINT: command to run when container starts.
-- CMD: command to run when container starts or arguments to ENTRYPOINT if specified.
+- `RUN`: executes command(s) in a new layer and creates a new image. E.g., it is often used for installing software packages.
+- `ENTRYPOINT`: allows to specify a command along with the parameters.
+- `CMD`: runs the default program that we want to execute once the container run. E.g., after making the base image and installing all the dependencies for mysql server we have to run the server inside the container, this `CMD` tells the container the instruction that it should run to starts the mysql server. 
 
-You can override any of them when running docker run.
+You can override `CMD` and `ENTRYPOINT` when running docker run.
 
-Difference between CMD and ENTRYPOINT **by example**:
+Difference between `CMD` and `ENTRYPOINT` **by example**:
 
     docker run -it --rm yourcontainer /bin/bash            <-- /bin/bash overrides CMD
                                                            <-- /bin/bash does not override ENTRYPOINT
@@ -548,13 +550,13 @@ Difference between CMD and ENTRYPOINT **by example**:
 
 More on difference between `CMD` and `ENTRYPOINT`:
 
-Argument to `docker run` such as /bin/bash overrides any CMD command we wrote in Dockerfile.
+Argument to `docker run` such as /bin/bash overrides any `CMD` command we wrote in Dockerfile.
 
-ENTRYPOINT cannot be overriden at run time with normal commands such as `docker run [args]`. The `args` at the end of `docker run [args]` are provided as arguments to ENTRYPOINT. In this way we can create a `container` which is like a normal binary such as `ls`.
+`ENTRYPOINT` cannot be overriden at run time with normal commands such as `docker run [args]`. The `args` at the end of `docker run [args]` are provided as arguments to `ENTRYPOINT`. In this way we can create a `container` which is like a normal binary such as `ls`.
 
-So CMD can act as default parameters to ENTRYPOINT and then we can override the CMD args from [args].
+So `CMD` can act as default parameters to `ENTRYPOINT` and then we can override the `CMD` args from [args].
 
-ENTRYPOINT can be overriden with `--entrypoint`.
+`ENTRYPOINT` can be overriden with `--entrypoint`.
 
 ---
 
@@ -657,14 +659,18 @@ With the docker `run [OPTIONS]` an operator can add to or override the image def
 
   - specify a version of an image you’d like to run the container with - For example, `docker run ubuntu:14.04`
 
-- a=[]
+- `a=[]`
   - Attach to `STDIN`, `STDOUT` and/or `STDERR`
     -t
   - Allocate a pseudo-tty
-- sig-proxy=true
+- `sig-proxy=true`
   - Proxy all received signals to the process (non-TTY mode only)
-- i
+- `i`
   - Keep STDIN open even if not attached
+- `rm`
+  - automatically clean up the container and remove the file system when the container exits
+- `it`
+  - `-it` is short for `--interactive + --tty` when you `docker run` with this command.. it would take you straight inside of the container,, where `-d` is short for `--detach` which means you just run the container and then *detach* from it so basically you run container in the background.. so if you run docker container with`-itd` it would run the`-it` options and detach you from the container, so your container still running in the background even without any default app to run..
 
 [More](https://docs.docker.com/engine/More/run/)
 
