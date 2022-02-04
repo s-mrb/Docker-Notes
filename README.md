@@ -938,7 +938,8 @@ docker rm $(docker ps -a -q)
 
 ## Practice
 
-- [PWD](https://training.play-with-docker.com)
+- [PWD Training](https://training.play-with-docker.com)
+- [Docker 101](https://www.docker.com/101-tutorial)
 
 ---
 
@@ -947,6 +948,7 @@ docker rm $(docker ps -a -q)
 ## Read More
 
 - [docker networks](https://binarymaps.com/docker-network/)
+- [Docker Community](https://docs.docker.com/get-started/resources/)
 
 ---
 
