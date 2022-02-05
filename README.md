@@ -23,7 +23,7 @@
     1.  [Macvlan](https://github.com/s-mrb/Docker-Notes#macvlan)
 1.  [Dockerfile](https://github.com/s-mrb/Docker-Notes#dockerfile-1)
     1.  [Common instructions](https://github.com/s-mrb/Docker-Notes#common-instructions)
-    2.  [How to make and run dockerfile?](#how-to-make-and-run-dockerfile?)
+    2.  [How to make and run dockerfile?](#how-to-make-and-run-dockerfile)
 2.  [Docker Compose](https://github.com/s-mrb/Docker-Notes#docker-compose)
 3.  [Docker CLI Commands](https://github.com/s-mrb/Docker-Notes#docker-cli-commands)
     1.  [build](https://github.com/s-mrb/Docker-Notes#build)
